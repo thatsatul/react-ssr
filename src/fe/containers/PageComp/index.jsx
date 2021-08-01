@@ -12,7 +12,9 @@ const PageComp = (props) => {
   const { pageNum } = match.params;
 
   useEffect(() => {
-    dispatch(getTestData(pageNum));
+    if(!test.data || !test.data[pageNum]) {
+      dispatch(getTestData(pageNum));
+    }
   }, [pageNum]);
 
   const prevPage = () => {
@@ -30,10 +32,14 @@ const PageComp = (props) => {
     return <div>Loading...</div>;
   }
 
-  if (test.data) {
+  if (test.data && test.data[pageNum]) {
     return (
       <section>
-        {test.data.hits.map(hit => <div>{hit.title}</div>)}
+        <Helmet>
+          <title>News Records</title>
+          <meta name="description" content="News records"></meta>
+        </Helmet>
+        {test.data[pageNum].hits.map((hit, index) => <div key={hit.title + index}>{hit.title}</div>)}
         <div>
           <button onClick={() => prevPage()}>Prev Page</button>
           <button onClick={() => nextPage()}>Next Page</button>

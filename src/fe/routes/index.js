@@ -1,21 +1,20 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Home from '../containers/Home';
-import PageComp from '../containers/PageComp';
+import allRoutes from '../../routes';
 
 const router = () => {
   return(
     <Switch>
-      <Route
-        exact
-        path="/"
-        component={Home}
-      />
-      <Route
-        exact
-        path="/page/:pageNum"
-        component={PageComp}
-      />
+      {allRoutes.map(route => (
+        <Route
+          key={route.url}
+          path={route.url}
+          exact={route.exact}
+          render={(ownProps) => {
+            return <route.comp {...ownProps} loadData={route.loadData} />;
+          }}
+        />
+      ))}
     </Switch>
   );
 };

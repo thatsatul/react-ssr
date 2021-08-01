@@ -11,12 +11,23 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GET_TEST_DATA: {
-      return { ...state, isFetching: true };
+      return {
+        ...state,
+        isFetching: true,
+        error: null
+      };
     }
 
     case GET_TEST_DATA_SUCCESS: {
-      const { data } = action;
-      return { ...state, isFetching: false, data };
+      const { data, key } = action;
+      return {
+        ...state,
+        isFetching: false,
+        data: { 
+          ...state.data,
+          [key]: data
+        }
+      };
     }
 
     default:

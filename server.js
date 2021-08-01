@@ -19,7 +19,7 @@ import Layout  from './layout';
 
 import appReducer from './src/fe/reducers';
 import FERoutes from './src/fe/routes';
-// import { getTestData } from './src/fe/actions/test';
+import allRoutes from './src/routes';
 
 // Compression for gzip, deflate
 app.use(compression());
@@ -54,38 +54,34 @@ app.post('/test', (req, res) => {
 // anything beginning with "/api" will go into this
 // app.use('/api', require(path.join(rootDir, './src/be/routes/api/index.js')));
 
-// Creating a single index route to server our React application from.
-app.get('*', handleRender);
+allRoutes.forEach(route => app.get(route.url, (req, res) => handleRender(req, res, route)));
 
-function handleRender(req, res) {
-
+function handleRender(req, res, route) {
   // Create a new Redux store instance
   const store = createStore(appReducer, {}, applyMiddleware(...middlewares));
   const context = {};
 
-  // Promise.all(store.dispatch(getTestData(1)))
-  //   .then(() => {
-  //     console.log(store.getState());
-  //   })
-  //   .catch(err => {
-  //     console.log('Some error happened', err);
-  //   });
+  route.loadData && route.loadData(store.dispatch, req).then(() => {
+    // Render the component to a string
+    const html = ReactDOMServer.renderToString(
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <FERoutes />
+        </StaticRouter>
+      </Provider>
+    );
 
-  // Render the component to a string
-  const html = ReactDOMServer.renderToString(
-    <Provider store={store}>
-      <StaticRouter location={req.url} context={context}>
-        <FERoutes />
-      </StaticRouter>
-    </Provider>
-  );
+    // Grab the initial state from our Redux store
+    const preloadedState = store.getState();
+    const htmlToRender = Layout({html, preloadedState});
 
-  // Grab the initial state from our Redux store
-  const preloadedState = store.getState();
-  const htmlToRender = Layout({html, preloadedState});
-
-  res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-  res.send(htmlToRender);
+    res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+    res.send(htmlToRender);
+  }).catch((err) => {
+    console.log('Error occurred', err);
+    res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+    res.send('Error occurred');
+  });
 }
 
 app.listen(defaultPort, () => {

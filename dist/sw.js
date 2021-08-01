@@ -1,4 +1,4 @@
-var CACHE_NAME = 'pwa-task-manager';
+var CACHE_NAME = 'react-ssr-sw';
 var urlsToCache = [
   '/',
   '/static/img/icons-192.png',
