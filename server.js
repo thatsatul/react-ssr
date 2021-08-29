@@ -11,15 +11,22 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from "redux";
 import middlewares from './middlewares';
 import Layout  from './layout';
-
-// console.log('__dirname', __dirname);
-// console.log(process.cwd());
-
-// const rootDir = process.cwd();
-
 import appReducer from './src/fe/reducers';
 import FERoutes from './src/fe/routes';
 import allRoutes from './src/routes';
+// const React = require('react');
+// const { StaticRouter } = require('react-router-dom');
+// const { Provider } = require('react-redux');
+// const { applyMiddleware, createStore } = require('redux');
+// const middlewares = require('./middlewares');
+// const Layout = require('./layout');
+// const appReducer = require('./src/fe/reducers');
+// const FERoutes = require('./src/fe/routes');
+// const allRoutes = ('./src/routes');
+
+// console.log('__dirname', __dirname);
+// console.log(process.cwd());
+// const rootDir = process.cwd();
 
 // Compression for gzip, deflate
 app.use(compression());

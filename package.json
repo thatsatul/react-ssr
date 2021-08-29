@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run cpFiles && nodemon ./dist/server_bundle.cjs",
+    "start": "npm run cpFiles && nodemon ./dist/server_bundle.js",
     "build-dev": "webpack --progress",
     "cpFiles": "cp ./sw.js ./dist/sw.js && cp ./manifest.json ./dist/manifest.json && cp ./robots.txt ./dist/robots.txt"
   },

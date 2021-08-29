@@ -90,7 +90,7 @@ const serverConfig = env => {
     externals: [nodeExternals()],
     output: {
       path: path.resolve(rootDir, 'dist'),
-      filename: 'server_bundle.cjs',
+      filename: 'server_bundle.js',
       publicPath: '/',
     },
   };
